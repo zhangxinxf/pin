@@ -1,0 +1,306 @@
+body{
+	padding-top: 56px;
+}
+.navbar-inverse{
+	background: #eeeeee;
+}
+.navbar-inverse2{
+	background: #a02c0f;
+}
+
+.fl{
+	float: left;
+}
+.fr{
+	float: right;
+}
+.container{
+	max-width: 680px;
+}
+.homebtn{
+	width: 60px;
+	line-height: 36px;
+	text-align: center;
+	color: #000;
+	font-size: 1em;
+	margin: 10px 0 10px 20px;
+	background:url(../images/indexbg.jpg) 0 0 no-repeat;
+	position:  relative;
+	z-index: 99;
+
+}
+.homebtn2{
+	width: 60px;
+	line-height: 43px;
+	text-align: center;
+	color: #fff;
+	font-size: 1em;
+	margin: 10px 0 10px 20px;
+	background:url(../images/back.png) 0 0 no-repeat;
+	position:  relative;
+	z-index: 99;
+
+}
+.cate{
+	width: 60px;
+	height: 38px; 
+	line-height: 38px;
+	text-align: center;
+	color: #000;
+	font-size: 1em;
+	margin: 10px 20px 0 0;
+	background:url(../images/catebg.jpg) 0 0 no-repeat;
+	position:  relative;
+	z-index: 99;
+}
+.more{
+	width: 275px;
+	height: 45px;
+	line-height: 45px;
+	color: #000;
+	font-size: 1.2em;
+	margin: 10px auto 25px;
+	text-align: center;;
+	background: #eeeeee;
+	border-radius: 20px;
+}
+.list{
+	width: 
+}
+.banner img{
+	max-width: 100%;
+}
+
+.photoimg{
+	position: relative;
+}
+.photo img{
+	max-width: 100%;
+	
+}
+.photoimg .slogo{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 30%;
+}
+.photoimg .pay{
+	position: absolute;
+	bottom: 5%;
+	right: 5%;
+	background: #000;
+	color: #fff;
+	font-size: 1em;
+	padding:5px 10px;
+	filter:alpha(opacity=50); 
+	 -moz-opacity:0.5; 
+	 -khtml-opacity: 0.5; 
+	  opacity: 0.5; 
+}
+.listcate{
+	float: right;
+	width: 85%;
+	padding-right: 20px;
+	border-left: 1px #dddddd solid ;
+}
+.search{
+	width: 100%;
+	margin:20px 0;
+	padding-left: 20px;
+}
+
+.form-control{
+	float: left;
+	width: 70%;
+}
+.btn-default{
+	float: right;
+	background-color: #FFFFFF;
+    border-color: #CCCCCC;
+    color: #333333;
+}
+.list{
+	padding-top: 20px;
+	padding-left: 20px;
+	clear: both;
+}
+.list ul{
+	padding-left: 0px;
+	border-bottom:  1px #dddddd solid;
+}
+.list li{
+	list-style: none;
+	line-height: 45px;
+	font-size: 1.2em;
+	color: #3d3d3d;
+	border-top: 1px #dddddd solid;
+}
+.list li img{
+	float: right;
+	padding-top: 18px;
+	width:5%;
+}
+.btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active {
+    background-color:#FFFFFF;
+    border-color: #CCCCCC;
+    color: #333333;
+}
+.names{
+	font-size: 1.2em;
+	line-height: 56px;
+	text-align:center;
+	color: #000;
+	position: relative;
+	z-index: 1;
+	width: 50%;
+
+}
+.names2{
+	font-size: 1.2em;
+	line-height: 56px;
+	text-align:center;
+	color: #fff;
+	position: relative;
+	z-index: 1;
+	width: 50%;
+
+}
+
+.detail{
+	margin:10px 0 0;
+}
+
+.photoimg2{
+	position: relative;
+}
+.photo2{
+	padding-bottom: 20px;
+	overflow: hidden;
+}
+.photo2 img{
+	max-width: 100%;
+	
+}
+.photoimg2 .blogo{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 30%;
+}
+.photoimg2 .pay{
+	position: absolute;
+	bottom: -2%;
+	left: 5%;
+	background: #000;
+	color: #fff;
+	font-size: 2em;
+	padding:5px 20px;
+	filter:alpha(opacity=60); 
+	 -moz-opacity:06; 
+	 -khtml-opacity: 0.6; 
+	  opacity: 0.6; 
+	  border-radius: 15px;
+}
+.photo2 p{
+	 padding: 10px 0 0 0;
+	 line-height: 1;
+}
+.photo2 p a{
+	float: left;
+	font-size: 1em;
+	line-height: 20px;
+	width: 85%;
+}
+.photo2 p img{
+	float: right;
+	width: 10%;
+}
+.photoimg3{
+	position: relative;
+}
+.photo3 img{
+	max-width: 100%;
+	
+}
+.photoimg3 .slogo{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 30%;
+}
+.photoimg3 .pay{
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	background: #000;
+	color: #fff;
+	font-size: 1.5em;
+	padding:5px 20px;
+	filter:alpha(opacity=60); 
+	 -moz-opacity:06; 
+	 -khtml-opacity: 0.6; 
+	  opacity: 0.6; 
+
+}
+.photo3 p{
+	 padding: 5px 0 20px;
+}
+.photo3 p a{
+	font-size: 1em;
+	line-height: 20px;
+	display: block;
+}
+.photo3 p strong{
+	float: right;
+	text-align: right;
+	margin-right: 5%;
+	padding-left: 25px;
+	height: 80%;
+	background:  url(../images/pinglun.png) left 0 no-repeat;
+}
+.hotcate{
+	margin: 20px 0;
+	border-radius: 5px;
+	border: 1px solid #ddd;
+	color: #000;
+	background: #fffdf7;
+	overflow: hidden;
+}
+.hotcate .tit{
+	line-height: 40px;
+	font-size: 1.2em;
+	padding-left: 20px;
+	background: #fffdf7;
+	border-bottom: 1px #ddd solid;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.hotcate .tit img{
+ 	float: right;
+ 	width: 6%;
+ 	margin-top: 15px;
+ 	margin-right: 20px;
+}
+.bg{
+ background: #fdf9f2;
+ text-align: center;
+ overflow: hidden;
+ padding-left: 0px;
+    padding-right: 0px;
+
+	 
+}
+.bg1{
+	 margin-left: -1px;
+	 padding: 10px 0;
+	 border-bottom: 1px #ccc solid;
+	 overflow: hidden;
+}
+.lib{
+	border-left: 1px #ccc solid;
+	color: #5d6a85;
+	padding: 5px 0;
+	
+
+}
+
