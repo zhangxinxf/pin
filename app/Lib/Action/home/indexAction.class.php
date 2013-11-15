@@ -1,47 +1,151 @@
 <?php
 class indexAction extends frontendAction {
-    
-    public function index() {
-        //分类
-        if (false === $index_cate_list = F('index_cate_list')) {
-            $item_cate_mod = M('item_cate');
-            //分类关系
-            if (false === $cate_relate = F('cate_relate')) {
-                $cate_relate = D('item_cate')->relate_cache();
-            }
-            //分类缓存
-            if (false === $cate_data = F('cate_data')) {
-                $cate_data = D('item_cate')->cate_data_cache();
-            }
-            //推荐到首页的大类
-            $index_cate_list = $item_cate_mod->field('id,name,img')->where(array('pid'=>'0' ,'is_index'=>'1', 'status'=>'1'))->order('ordid')->select();
-            foreach ($index_cate_list as $key=>$val) {
-                //推荐到首页的子类
-                $where = array('status'=>'1', 'is_index'=>'1', 'spid'=>array('like', $val['id'] . '|%'));
-                $index_cate_list[$key]['index_sub'] = $item_cate_mod->field('id,name,img')->where($where)->order('ordid')->select();
-                //普通子类
-                $index_cate_list[$key]['sub'] = array();
-                foreach ($cate_relate[$val['id']]['sids'] as $sid) {
-                    if ($cate_data[$sid]['type'] == '0' && $cate_data[$sid]['pid'] != $val['id']) {
-                        $index_cate_list[$key]['sub'][] = $cate_data[$sid];
-                    }
-                    if (count($index_cate_list[$key]['sub']) >= 6) {
-                        break;
-                    }
-                }
-            }
-         //   F('index_cate_list', $index_cate_list);
-        }
-
-        //发现
-        $hot_tags = explode(',', C('pin_hot_tags')); //热门标签
-        $hot_tags = array_slice($hot_tags, 0, 12);
-        $this->waterfall('', 'hits DESC,id DESC', '', C('pin_book_page_max'), 'book/index');
-
-        $this->assign('index_cate_list', $index_cate_list);
-        $this->assign('hot_tags', $hot_tags);
-        $this->assign('nav_curr', 'index');
-        $this->_config_seo();
-        $this->display();
-    }
+	/* 首页数据 */
+	public function index() {
+		$hot_tags = explode ( ',', C ( 'pin_hot_tags' ) ); // 热门标签
+		$page_max = C ( 'pin_book_page_max' ); // 发现页面最多显示页数
+		$sort = $this->_get ( 'sort', 'trim', 'hot' ); // 排序
+		$tag = $this->_get ( 'tag', 'trim' ); // 当前标签
+		
+		$where = array ();
+		$tag && $where ['intro'] = array (
+				'like',
+				'%' . $tag . '%' 
+		);
+		// 排序：最热(hot)，最新(new)
+		switch ($sort) {
+			case 'hot' :
+				$order = 'hits DESC,id DESC';
+				break;
+			case 'new' :
+				$order = 'id DESC';
+				break;
+		}
+		$this->waterfall ( $where, $order, '', $page_max );
+		// }
+		
+		$this->assign ( 'hot_tags', $hot_tags );
+		$this->assign ( 'tag', $tag );
+		$this->assign ( 'sort', $sort );
+		$this->_config_seo ( C ( 'pin_seo_config.book' ), array (
+				'tag_name' => $tag 
+		) ); // SEO
+		$this->display ();
+	}
+	/**
+	 * 获取分页数据
+	 */
+	public function index_ajax() {
+		$tag = $this->_get ( 'tag', 'trim' ); // 标签
+		$sort = $this->_get ( 'sort', 'trim', 'hot' ); // 排序
+		switch ($sort) {
+			case 'hot' :
+				$order = 'hits DESC,id DESC';
+				break;
+			case 'new' :
+				$order = 'id DESC';
+				break;
+		}
+		$where = array ();
+		$tag && $where ['intro'] = array (
+				'like',
+				'%' . $tag . '%' 
+		);
+		$this->wall_ajax ( $where, $order );
+	}
+	
+	/**
+	 * 获取数据
+	 */
+	public function waterfall($where = array(), $order = 'id DESC', $field = '', $page_max = '', $target = '') {
+		$spage_size = C ( 'pin_wall_spage_size' ); // 每次加载个数
+		$page_size = $spage_size * 1; // 每页显示个数
+		
+		$item_mod = M ( 'item' );
+		$where_init = array (
+				'status' => '1' 
+		);
+		$where = $where ? array_merge ( $where_init, $where ) : $where_init;
+		$count = $item_mod->where ( $where )->count ( 'id' );
+		// 控制最多显示多少页
+		if ($page_max && $count > $page_max * $page_size) {
+			$count = $page_max * $page_size;
+		}
+		// 查询字段
+		$field == '' && $field = 'id,uid,uname,title,intro,img,price,likes,comments,comments_cache';
+		// 分页
+		$pager = $this->_pager ( $count, $page_size );
+		$target && $pager->path = $target;
+		$item_list = $item_mod->field ( $field )->where ( $where )->order ( $order )->limit ( $pager->firstRow . ',' . $spage_size )->select ();
+		foreach ( $item_list as $key => $val ) {
+			isset ( $val ['comments_cache'] ) && $item_list [$key] ['comment_list'] = unserialize ( $val ['comments_cache'] );
+		}
+		$this->assign ( 'item_list', $item_list );
+		// 当前页码
+		$p = $this->_get ( 'p', 'intval', 1 );
+		$this->assign ( 'p', $p );
+		
+		/*
+		 * // 当前页面总数大于单次加载数才会执行动态加载 if (($count - ($p - 1) * $page_size) > $spage_size) { $this->assign ( 'show_load', 1 ); } // 总数大于单页数才显示分页 $count > $page_size && $this->assign ( 'page_bar', $pager->fshow () ); // 最后一页分页处理 if ((count ( $item_list ) + $page_size * ($p - 1)) == $count) { $this->assign ( 'show_page', 1 ); }
+		 */
+	}
+	/**
+	 * 瀑布加载
+	 */
+	public function wall_ajax($where = array(), $order = 'id DESC', $field = '') {
+		$spage_size = C ( 'pin_wall_spage_size' ); // 每次加载个数
+		$p = $this->_get ( 'p', 'intval', 1 ); // 页码
+		                                       // 条件
+		$where_init = array (
+				'status' => '1' 
+		);
+		$where = array_merge ( $where_init, $where );
+		// 计算开始
+		$start = $spage_size * $p;
+		$item_mod = M ( 'item' );
+		$count = $item_mod->where ( $where )->count ( 'id' );
+		$field == '' && $field = 'id,uid,uname,title,intro,img,price,likes,comments,comments_cache';
+		$item_list = $item_mod->field ( $field )->where ( $where )->order ( $order )->limit ( $start . ',' . $spage_size )->select ();
+		$this->assign ( 'item_list', $item_list );
+		$totalPages = ceil ( $count / $spage_size ); // 总页数
+		$end=0;
+		if ($p < $totalPages) {
+			$p = $p + 1;
+		}else{
+			$end=1;
+		}
+		$this->ajaxReturn ( 1, $p, $item_list,$end );
+	}
+	/* 首页数据 */
+	public function hot() {
+		$hot_tags = explode ( ',', C ( 'pin_hot_tags' ) ); // 热门标签
+		$page_max = C ( 'pin_book_page_max' ); // 发现页面最多显示页数
+		$sort = $this->_get ( 'sort', 'trim', 'hot' ); // 排序
+		$tag = $this->_get ( 'tag', 'trim' ); // 当前标签
+		
+		$where = array ();
+		$tag && $where ['intro'] = array (
+				'like',
+				'%' . $tag . '%' 
+		);
+		// 排序：最热(hot)，最新(new)
+		switch ($sort) {
+			case 'hot' :
+				$order = 'hits DESC,id DESC';
+				break;
+			case 'new' :
+				$order = 'id DESC';
+				break;
+		}
+		$this->waterfall ( $where, $order, '', $page_max );
+		// }
+		
+		$this->assign ( 'hot_tags', $hot_tags );
+		$this->assign ( 'tag', $tag );
+		$this->assign ( 'sort', $sort );
+		$this->_config_seo ( C ( 'pin_seo_config.book' ), array (
+				'tag_name' => $tag 
+		) ); // SEO
+		$this->display ();
+	}
 }

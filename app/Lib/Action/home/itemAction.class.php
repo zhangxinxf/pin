@@ -18,7 +18,7 @@ class itemAction extends frontendAction {
         $id = $this->_get('id', 'intval');
         !$id && $this->_404();
         $item_mod = M('item');
-        $item = $item_mod->field('id,title,uid,uname,intro,price,url,likes,comments,tag_cache,seo_title,seo_keys,seo_desc,add_time')->where(array('id' => $id, 'status' => 1))->find();
+        $item = $item_mod->field('id,title,img,uid,uname,intro,price,url,likes,comments,tag_cache,seo_title,seo_keys,seo_desc,add_time')->where(array('id' => $id, 'status' => 1))->find();
         !$item && $this->_404();
         //来源
         $orig = M('item_orig')->field('name,img')->find($item['orig_id']);

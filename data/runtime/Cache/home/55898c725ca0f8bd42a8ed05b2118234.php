@@ -1,27 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-<!-- Meta, title, CSS, favglyphicons, etc. -->
-<meta charset="utf-8">
-<title>首页</title>
-<meta name="viewport"
-	content="width=device-width, user-scalable=no, initial-scale=1.0">
-<meta name="description" content="">
-<!-- Bootstrap -->
-<link href="__STATIC__/css/custom/assets/css/bootstrap.css"
-	rel="stylesheet" media="screen">
-<link href="__STATIC__/css/custom/css/changan.css" rel="stylesheet"
-	media="screen">
-
-
-<script src="__STATIC__/css/custom/assets/js/jquery-1.9.0.js"></script>
-<script src="__STATIC__/css/custom/assets/js/jquery-migrate-1.0.0.js"></script>
-<script src="__STATIC__/css/custom/assets/js/bootstrap.min.js"></script>
-<script src="__STATIC__/css/custom/assets/js/holder/holder.js"></script>
-
-
-<style type="text/css">
-* {
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html><html><head><!-- Meta, title, CSS, favglyphicons, etc. --><meta charset="utf-8"><title>首页</title><meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0"><meta name="description" content=""><!-- Bootstrap --><link href="__STATIC__/css/custom/assets/css/bootstrap.css"
+	rel="stylesheet" media="screen"><link href="__STATIC__/css/custom/css/changan.css" rel="stylesheet"
+	media="screen"><script src="__STATIC__/css/custom/assets/js/jquery-1.9.0.js"></script><script src="__STATIC__/css/custom/assets/js/jquery-migrate-1.0.0.js"></script><script src="__STATIC__/css/custom/assets/js/bootstrap.min.js"></script><script src="__STATIC__/css/custom/assets/js/holder/holder.js"></script><style type="text/css">* {
 	margin: 0;
 	padding: 0;
 }
@@ -76,9 +56,7 @@ img {
 	background-color: RGB(243, 247, 251);
 	display: none;
 }
-</style>
-<script type="text/javascript">
-	window.onload = function() {
+</style><script type="text/javascript">	window.onload = function() {
 		//初始参数 
 		var reset = 0; //某些滚动条会触发三次scroll事件 用这个解决 
 		var surplusHeight = 800; //差值 
@@ -206,54 +184,5 @@ img {
 		//}, speed) 
 		//}; 
 	}
-</script>
-</head>
-<body>
-
-	<div class="navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="homebtn fl">
-				<a href="index.html">首页</a>
-			</div>
-			<div class="cate fr">
-				<a href="list.html">分类</a>
-			</div>
-		</div>
-	</div>
-	<input type="hidden" id="pageNum" value="{$p}">
-	<input type="hidden" id="end" value="0">
-	<!-- Carousel-->
-
-
-	<div class="container">
-		<div class="row">
-			<div class="col-12 detail">
-				<div class="photo3"   id="one">
-				<volist name="item_list" id="data">
-					<div class="photoimg3">
-						<img src="{$data.img}" alt="">
-						<div class="pay">{$data.price}</div>
-					</div>
-					<p>
-							<a href="__ROOT__/?m=item&a=index&id={$data.id}">{$data.title} </a> 
-					</p>
-					</volist>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- /container -->
-<div id="loading" class="loading">
-			<img
-				src="http://files.jb51.net/file_images/article/201211/200803131036175436.gif" />
-		</div>
-		<div id="toTop">
-			<span>△回顶部</span>
-		</div>
-
-	<div class="footer">
-		<div class="container"></div>
-	</div>
-</body>
-</html>
+</script></head><body><div class="navbar-inverse navbar-fixed-top"><div class="container"><div class="homebtn fl"><a href="index.html">首页</a></div><div class="cate fr"><a href="list.html">分类</a></div></div></div><input type="hidden" id="pageNum" value="<?php echo ($p); ?>"><input type="hidden" id="end" value="0"><!-- Carousel--><div class="container"><div class="row"><div class="col-12 detail"><div class="photo3"   id="one"><?php if(is_array($item_list)): $i = 0; $__LIST__ = $item_list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$data): $mod = ($i % 2 );++$i;?><div class="photoimg3"><img src="<?php echo ($data["img"]); ?>" alt=""><div class="pay"><?php echo ($data["price"]); ?></div></div><p><a href="__ROOT__/?m=item&a=index&id=<?php echo ($data["id"]); ?>"><?php echo ($data["title"]); ?></a></p><?php endforeach; endif; else: echo "" ;endif; ?></div></div></div></div><!-- /container --><div id="loading" class="loading"><img
+				src="http://files.jb51.net/file_images/article/201211/200803131036175436.gif" /></div><div id="toTop"><span>△回顶部</span></div><div class="footer"><div class="container"></div></div></body></html>
