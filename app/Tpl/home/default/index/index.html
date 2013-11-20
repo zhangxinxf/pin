@@ -12,12 +12,17 @@
 	rel="stylesheet" media="screen">
 <link href="__STATIC__/css/custom/css/changan.css" rel="stylesheet"
 	media="screen">
+<!-- 菜单CSS -->
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/custom/css/menu-css.css">
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/custom/css/style.css"> 
 
 
 <script src="__STATIC__/css/custom/assets/js/jquery-1.9.0.js"></script>
 <script src="__STATIC__/css/custom/assets/js/jquery-migrate-1.0.0.js"></script>
 <script src="__STATIC__/css/custom/assets/js/bootstrap.min.js"></script>
 <script src="__STATIC__/css/custom/assets/js/holder/holder.js"></script>
+<!-- 菜单CSS -->
+<script src="__STATIC__/css/custom/assets/js/menu_min.js"></script>
 
 
 <style type="text/css">
@@ -78,6 +83,26 @@ img {
 }
 </style>
 <script type="text/javascript">
+
+$(document).ready(function (){ 
+	  $(".menu ul li").menu();
+	  $("#cate").hover(
+			  function(){
+				  $("#content").show();
+			  },
+			  function(){
+			  }
+		  );
+	  $("#content").hover(
+			  function(){
+				  
+			  },
+			  function(){
+				  $(this).hide();
+			  }
+		  );
+	}); 
+	
 	window.onload = function() {
 		//初始参数 
 		var reset = 0; //某些滚动条会触发三次scroll事件 用这个解决 
@@ -219,7 +244,57 @@ img {
 				<a href="__ROOT__/?m=index&a=index&sort=hot">首页</a>
 			</div>
 			<div class="cate fr">
-				<a href="list.html">分类</a>
+				<a href="#"  id="cate">分类</a>
+					<!-- 菜单 -->
+						<div id="content" style="display:none;">
+						<div class="menu">
+						<ul>
+								<volist name="cate_list" id="data">
+									<li><a href="#sub3">{$data.name}</a></li>
+								</volist>
+							<li><a class="active" href="#">Item 1</a>
+								<ul style="display: block;">
+									<li><a href="#sub1">Subitem 1</a></li>
+									<li><a href="#sub2">Subitem 2</a>
+										<ul>
+											<li><a href="#asdasdas">Subitem 1</a></li>
+											<li><a href="#nnnbbbbccb">Subitem 2</a></li>
+											<li><a href="#vvvccc">Subitem 3</a></li>
+											<li><a href="#bbbgvv">Subitem 4</a></li>
+										</ul>
+									</li>
+									<li><a href="#sub3">Subitem 3</a></li>
+									<li><a href="#sub4">Subitem 4</a>
+										<ul>
+											<li><a href="#asdasdas">Subitem 1</a></li>
+											<li><a href="#nnnbbbbccb">Subitem 2</a></li>
+										</ul>
+									</li>
+									<li><a href="#sub5">Subitem 5</a></li> 
+								</ul>				
+							</li>
+							<li><a href="#">Item 2</a>
+								<ul>
+									<li><a href="#subb1">Subitem 1</a></li>
+									<li><a href="#subb2">Subitem 2</a></li>
+									<li><a href="#subb3">Subitem 3</a></li>
+									<li><a href="#subb4">Subitem 4</a></li>
+								</ul>				
+							</li>
+							<li><a href="#">Item 3</a>
+								<ul>
+									<li><a href="#">Subitem 1</a></li>
+									<li><a href="#">Subitem 2</a></li>
+									<li><a href="#">Subitem 3</a></li>
+									<li><a href="#">Subitem 4</a></li>
+									<li><a href="#">Subitem 5</a></li>
+									<li><a href="#">Subitem 6</a></li>
+								</ul>				
+							</li>
+						</ul>
+						</div>
+						</div>
+				<!-- 菜单END -->
 			</div>
 		</div>
 	</div>

@@ -22,8 +22,23 @@ class indexAction extends frontendAction {
 				break;
 		}
 		$this->waterfall ( $where, $order, '', $page_max );
-		// }
-		
+	
+		//获取分类
+		$where_args = array (
+				'pid' => '1'
+		);
+		$cate_mod=M("item_cate");
+		$cate_list = $cate_mod->where ( $where_args )->select ();
+	   $list=array();
+		foreach ($cate_list as $key=>$value)
+		{	 
+			 $pid=$value->id;
+			 $where_args->pid=$pid;
+			 $children_list = $cate_mod->where ( $where_args )->select ();
+			 $list[$value]=$children_list;
+		}
+		$this->assign ( 'cate_list', $list );
+		echo $list;
 		$this->assign ( 'hot_tags', $hot_tags );
 		$this->assign ( 'tag', $tag );
 		$this->assign ( 'sort', $sort );

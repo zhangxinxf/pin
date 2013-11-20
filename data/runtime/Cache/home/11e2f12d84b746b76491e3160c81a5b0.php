@@ -1,7 +1,7 @@
 <?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html><html><head><!-- Meta, title, CSS, favglyphicons, etc. --><meta charset="utf-8"><title>首页</title><meta name="viewport"
 	content="width=device-width, user-scalable=no, initial-scale=1.0"><meta name="description" content=""><!-- Bootstrap --><link href="__STATIC__/css/custom/assets/css/bootstrap.css"
 	rel="stylesheet" media="screen"><link href="__STATIC__/css/custom/css/changan.css" rel="stylesheet"
-	media="screen"><script src="__STATIC__/css/custom/assets/js/jquery-1.9.0.js"></script><script src="__STATIC__/css/custom/assets/js/jquery-migrate-1.0.0.js"></script><script src="__STATIC__/css/custom/assets/js/bootstrap.min.js"></script><script src="__STATIC__/css/custom/assets/js/holder/holder.js"></script><style type="text/css">* {
+	media="screen"><!-- 菜单CSS --><link rel="stylesheet" type="text/css" href="__STATIC__/css/custom/css/menu-css.css"><link rel="stylesheet" type="text/css" href="__STATIC__/css/custom/css/style.css"><script src="__STATIC__/css/custom/assets/js/jquery-1.9.0.js"></script><script src="__STATIC__/css/custom/assets/js/jquery-migrate-1.0.0.js"></script><script src="__STATIC__/css/custom/assets/js/bootstrap.min.js"></script><script src="__STATIC__/css/custom/assets/js/holder/holder.js"></script><!-- 菜单CSS --><script src="__STATIC__/css/custom/assets/js/menu_min.js"></script><style type="text/css">* {
 	margin: 0;
 	padding: 0;
 }
@@ -56,7 +56,26 @@ img {
 	background-color: RGB(243, 247, 251);
 	display: none;
 }
-</style><script type="text/javascript">	window.onload = function() {
+</style><script type="text/javascript">$(document).ready(function (){ 
+	  $(".menu ul li").menu();
+	  $("#cate").hover(
+			  function(){
+				  $("#content").show();
+			  },
+			  function(){
+			  }
+		  );
+	  $("#content").hover(
+			  function(){
+				  
+			  },
+			  function(){
+				  $(this).hide();
+			  }
+		  );
+	}); 
+	
+	window.onload = function() {
 		//初始参数 
 		var reset = 0; //某些滚动条会触发三次scroll事件 用这个解决 
 		var surplusHeight = 800; //差值 
@@ -187,5 +206,5 @@ img {
 		//}, speed) 
 		//}; 
 	}
-</script></head><body><div class="navbar-inverse navbar-fixed-top"><div class="container"><div class="homebtn fl"><a href="__ROOT__/?m=index&a=index&sort=hot">首页</a></div><div class="cate fr"><a href="list.html">分类</a></div></div></div><input type="hidden" id="pageNum" value="<?php echo ($p); ?>"><input type="hidden" id="end" value="0"><!-- Carousel--><div class="container"><div class="banner"><img src="__STATIC__/css/custom/images/pic.png"></div><div class="more"><a href="__ROOT__/?m=book&a=index&sort=hot">热门宝贝</a></div><div class="row show-grid"><div class="col-12"><div class="col-6 photo" id="one"><?php if(is_array($item_list)): $i = 0; $__LIST__ = $item_list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$data): $mod = ($i % 2 );++$i;?><div class="photoimg"><img src="<?php echo ($data["img"]); ?>" alt=""><div class="pay"><?php echo ($data["price"]); ?></div></div><p><a href="__ROOT__/?m=item&a=index&id=<?php echo ($data["id"]); ?>"><?php echo ($data["title"]); ?></a></p><?php endforeach; endif; else: echo "" ;endif; ?></div><div class="col-6 photo" id="two"><?php if(is_array($item_list)): $i = 0; $__LIST__ = $item_list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$data): $mod = ($i % 2 );++$i;?><div class="photoimg"><img src="<?php echo ($data["img"]); ?>" alt=""><div class="pay"><?php echo ($data["price"]); ?></div></div><p><a href="__ROOT__/?m=item&a=index&id=<?php echo ($data["id"]); ?>"><?php echo ($data["title"]); ?></a></p><?php endforeach; endif; else: echo "" ;endif; ?></div></div></div><div id="loading" class="loading"><img
+</script></head><body><div class="navbar-inverse navbar-fixed-top"><div class="container"><div class="homebtn fl"><a href="__ROOT__/?m=index&a=index&sort=hot">首页</a></div><div class="cate fr"><a href="#"  id="cate">分类</a><!-- 菜单 --><div id="content" style="display:none;"><div class="menu"><ul><?php if(is_array($cate_list)): $i = 0; $__LIST__ = $cate_list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$data): $mod = ($i % 2 );++$i;?><li><a href="#sub3"><?php echo ($data["name"]); ?></a></li><?php endforeach; endif; else: echo "" ;endif; ?><li><a class="active" href="#">Item 1</a><ul style="display: block;"><li><a href="#sub1">Subitem 1</a></li><li><a href="#sub2">Subitem 2</a><ul><li><a href="#asdasdas">Subitem 1</a></li><li><a href="#nnnbbbbccb">Subitem 2</a></li><li><a href="#vvvccc">Subitem 3</a></li><li><a href="#bbbgvv">Subitem 4</a></li></ul></li><li><a href="#sub3">Subitem 3</a></li><li><a href="#sub4">Subitem 4</a><ul><li><a href="#asdasdas">Subitem 1</a></li><li><a href="#nnnbbbbccb">Subitem 2</a></li></ul></li><li><a href="#sub5">Subitem 5</a></li></ul></li><li><a href="#">Item 2</a><ul><li><a href="#subb1">Subitem 1</a></li><li><a href="#subb2">Subitem 2</a></li><li><a href="#subb3">Subitem 3</a></li><li><a href="#subb4">Subitem 4</a></li></ul></li><li><a href="#">Item 3</a><ul><li><a href="#">Subitem 1</a></li><li><a href="#">Subitem 2</a></li><li><a href="#">Subitem 3</a></li><li><a href="#">Subitem 4</a></li><li><a href="#">Subitem 5</a></li><li><a href="#">Subitem 6</a></li></ul></li></ul></div></div><!-- 菜单END --></div></div></div><input type="hidden" id="pageNum" value="<?php echo ($p); ?>"><input type="hidden" id="end" value="0"><!-- Carousel--><div class="container"><div class="banner"><img src="__STATIC__/css/custom/images/pic.png"></div><div class="more"><a href="__ROOT__/?m=book&a=index&sort=hot">热门宝贝</a></div><div class="row show-grid"><div class="col-12"><div class="col-6 photo" id="one"><?php if(is_array($item_list)): $i = 0; $__LIST__ = $item_list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$data): $mod = ($i % 2 );++$i;?><div class="photoimg"><img src="<?php echo ($data["img"]); ?>" alt=""><div class="pay"><?php echo ($data["price"]); ?></div></div><p><a href="__ROOT__/?m=item&a=index&id=<?php echo ($data["id"]); ?>"><?php echo ($data["title"]); ?></a></p><?php endforeach; endif; else: echo "" ;endif; ?></div><div class="col-6 photo" id="two"><?php if(is_array($item_list)): $i = 0; $__LIST__ = $item_list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$data): $mod = ($i % 2 );++$i;?><div class="photoimg"><img src="<?php echo ($data["img"]); ?>" alt=""><div class="pay"><?php echo ($data["price"]); ?></div></div><p><a href="__ROOT__/?m=item&a=index&id=<?php echo ($data["id"]); ?>"><?php echo ($data["title"]); ?></a></p><?php endforeach; endif; else: echo "" ;endif; ?></div></div></div><div id="loading" class="loading"><img
 				src="http://files.jb51.net/file_images/article/201211/200803131036175436.gif" /></div><div id="toTop"><span>△回顶部</span></div></div><!-- /container --><div class="footer"><div class="container"></div></div><!-- JavaScript plugins (requires jQuery) --><!-- Include all compiled plugins (below), or include individual files as needed --></body></html>
