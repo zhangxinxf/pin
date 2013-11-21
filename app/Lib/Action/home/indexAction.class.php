@@ -6,12 +6,14 @@ class indexAction extends frontendAction {
 		$page_max = C ( 'pin_book_page_max' ); // 发现页面最多显示页数
 		$sort = $this->_get ( 'sort', 'trim', 'hot' ); // 排序
 		$tag = $this->_get ( 'tag', 'trim' ); // 当前标签
+		$cate_id = $this->_get ( 'cate_id', 'trim' );
 		
 		$where = array ();
 		$tag && $where ['intro'] = array (
 				'like',
 				'%' . $tag . '%' 
 		);
+		$cate_id && $where ["cate_id"] = $cate_id;
 		// 排序：最热(hot)，最新(new)
 		switch ($sort) {
 			case 'hot' :
@@ -22,23 +24,26 @@ class indexAction extends frontendAction {
 				break;
 		}
 		$this->waterfall ( $where, $order, '', $page_max );
-	
-		//获取分类
+		
+		// 获取分类
 		$where_args = array (
-				'pid' => '1'
+				'pid' => '1' 
 		);
-		$cate_mod=M("item_cate");
-		$cate_list = $cate_mod->where ( $where_args )->select ();
-	   $list=array();
-		foreach ($cate_list as $key=>$value)
-		{	 
-			 $pid=$value->id;
-			 $where_args->pid=$pid;
-			 $children_list = $cate_mod->where ( $where_args )->select ();
-			 $list[$value]=$children_list;
+		//分类查询
+		$cate_mod = M ( "item_cate" );
+		$field = "id,name";
+		$cate_list = $cate_mod->field ( $field )->where ( $where_args )->select ();
+		$list = array ();
+		foreach ( $cate_list as $key => $value ) {
+			$pid = $value ["id"];
+			$where_args ['pid'] = $pid;
+			$children_list = $cate_mod->where ( $where_args )->select ();
+			$list [$pid] ["info"] = $value;
+			$list [$pid] ["children"] = $children_list;
 		}
 		$this->assign ( 'cate_list', $list );
-		echo $list;
+		
+		$this->assign ( "cate_id", $cate_id );
 		$this->assign ( 'hot_tags', $hot_tags );
 		$this->assign ( 'tag', $tag );
 		$this->assign ( 'sort', $sort );
@@ -53,6 +58,9 @@ class indexAction extends frontendAction {
 	public function index_ajax() {
 		$tag = $this->_get ( 'tag', 'trim' ); // 标签
 		$sort = $this->_get ( 'sort', 'trim', 'hot' ); // 排序
+		$cate_id = $this->_get ( 'cate_id', 'trim' );
+		
+		
 		switch ($sort) {
 			case 'hot' :
 				$order = 'hits DESC,id DESC';
@@ -66,6 +74,7 @@ class indexAction extends frontendAction {
 				'like',
 				'%' . $tag . '%' 
 		);
+		$cate_id && $where ["cate_id"] = $cate_id;
 		$this->wall_ajax ( $where, $order );
 	}
 	
@@ -123,13 +132,13 @@ class indexAction extends frontendAction {
 		$item_list = $item_mod->field ( $field )->where ( $where )->order ( $order )->limit ( $start . ',' . $spage_size )->select ();
 		$this->assign ( 'item_list', $item_list );
 		$totalPages = ceil ( $count / $spage_size ); // 总页数
-		$end=0;
+		$end = 0;
 		if ($p < $totalPages) {
 			$p = $p + 1;
-		}else{
-			$end=1;
+		} else {
+			$end = 1;
 		}
-		$this->ajaxReturn ( 1, $p, $item_list,$end );
+		$this->ajaxReturn ( 1, $p, $item_list, $end );
 	}
 	/* 首页数据 */
 	public function hot() {

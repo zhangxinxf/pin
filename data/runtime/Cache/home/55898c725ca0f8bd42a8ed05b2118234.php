@@ -1,7 +1,9 @@
 <?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html><html><head><!-- Meta, title, CSS, favglyphicons, etc. --><meta charset="utf-8"><title>首页</title><meta name="viewport"
 	content="width=device-width, user-scalable=no, initial-scale=1.0"><meta name="description" content=""><!-- Bootstrap --><link href="__STATIC__/css/custom/assets/css/bootstrap.css"
 	rel="stylesheet" media="screen"><link href="__STATIC__/css/custom/css/changan.css" rel="stylesheet"
-	media="screen"><script src="__STATIC__/css/custom/assets/js/jquery-1.9.0.js"></script><script src="__STATIC__/css/custom/assets/js/jquery-migrate-1.0.0.js"></script><script src="__STATIC__/css/custom/assets/js/bootstrap.min.js"></script><script src="__STATIC__/css/custom/assets/js/holder/holder.js"></script><style type="text/css">* {
+	media="screen"><!-- 菜单CSS --><link rel="stylesheet" type="text/css"
+	href="__STATIC__/css/custom/css/menu-css.css"><link rel="stylesheet" type="text/css"
+	href="__STATIC__/css/custom/css/style.css"><script src="__STATIC__/css/custom/assets/js/jquery-1.9.0.js"></script><script src="__STATIC__/css/custom/assets/js/jquery-migrate-1.0.0.js"></script><script src="__STATIC__/css/custom/assets/js/bootstrap.min.js"></script><script src="__STATIC__/css/custom/assets/js/holder/holder.js"></script><!-- 菜单JS --><script src="__STATIC__/css/custom/assets/js/menu_min.js"></script><style type="text/css">* {
 	margin: 0;
 	padding: 0;
 }
@@ -56,7 +58,19 @@ img {
 	background-color: RGB(243, 247, 251);
 	display: none;
 }
-</style><script type="text/javascript">	window.onload = function() {
+</style><script type="text/javascript">$(document).ready(function() {
+	$(".menu ul li").menu();
+	$("#cate").hover(function() {
+		$("#content").show();
+	}, function() {
+	});
+	$("#content").hover(function() {
+
+	}, function() {
+		$(this).hide();
+	});
+});
+	window.onload = function() {
 		//初始参数 
 		var reset = 0; //某些滚动条会触发三次scroll事件 用这个解决 
 		var surplusHeight = 800; //差值 
@@ -112,8 +126,9 @@ img {
 		function loadImg() {
 			loading.style.display = "none";
 			var pageNum = document.getElementById("pageNum").value;
+			var cate_id = document.getElementById("cate_id").value;
 			$.ajax({
-				url : '__ROOT__/?m=book&a=index_ajax&sort=hot&p=' + pageNum,
+				url : '__ROOT__/?m=book&a=index_ajax&sort=hot&p=' + pageNum+"&cate_id="+cate_id,
 				type : "POST",
 				dataType : "json",
 				success : function(result) {
@@ -169,20 +184,7 @@ img {
 				return "Gecko";
 			}
 		}
-		//回到顶部  这段代码先屏蔽
-		//toTop.onclick = function () { 
-		//var count = 500; //每次的距离 
-		//var speed = 200; //速度 
-		//var timer = setInterval(function () { 
-		//var top_top = document.body.scrollTop || document.documentElement.scrollTop; 
-		//var tt = top_top - count; 
-		//tt = (tt < 300) ? 0 : tt; 
-		//if (top_top > 0) 
-		//window.scrollTo(tt, tt); 
-		//else 
-		//clearInterval(timer); 
-		//}, speed) 
-		//}; 
 	}
-</script></head><body><div class="navbar-inverse navbar-fixed-top"><div class="container"><div class="homebtn fl"><a href="index.html">首页</a></div><div class="cate fr"><a href="list.html">分类</a></div></div></div><input type="hidden" id="pageNum" value="<?php echo ($p); ?>"><input type="hidden" id="end" value="0"><!-- Carousel--><div class="container"><div class="row"><div class="col-12 detail"><div class="photo3"   id="one"><?php if(is_array($item_list)): $i = 0; $__LIST__ = $item_list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$data): $mod = ($i % 2 );++$i;?><div class="photoimg3"><img src="<?php echo ($data["img"]); ?>" alt=""><div class="pay"><?php echo ($data["price"]); ?></div></div><p><a href="__ROOT__/?m=item&a=index&id=<?php echo ($data["id"]); ?>"><?php echo ($data["title"]); ?></a></p><?php endforeach; endif; else: echo "" ;endif; ?></div></div></div></div><!-- /container --><div id="loading" class="loading"><img
+</script></head><body><div class="navbar-inverse navbar-fixed-top"><div class="container"><div class="homebtn fl"><a href="<?php echo U('index/index', array('sort'=>'hot'));?>">首页</a></div><div class="cate fr"><a href="#" id="cate">分类</a><!-- 菜单 --><div id="content" style="display: none;"><div class="menu"><ul><?php if(is_array($cate_list)): $i = 0; $__LIST__ = $cate_list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$data): $mod = ($i % 2 );++$i;?><li><a href="#sub3"><?php echo ($data["info"]["name"]); ?></a><?php if(($data['children']|count) > 0): ?><ul><?php if(is_array($data['children'])): $i = 0; $__LIST__ = $data['children'];if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$chil): $mod = ($i % 2 );++$i;?><li><a
+										href="<?php echo U('book/index', array('sort'=>'hot','cate_id'=>$chil['id']));?>"><?php echo ($chil["name"]); ?></a></li><?php endforeach; endif; else: echo "" ;endif; ?></ul><?php endif; ?></li><?php endforeach; endif; else: echo "" ;endif; ?></ul></div></div></div></div></div><input type="hidden" id="pageNum" value="<?php echo ($p); ?>"><input type="hidden" id="end" value="0"><input type="hidden" id="cate_id" value="<?php echo ($cate_id); ?>"><!-- Carousel--><div class="container"><div class="row"><div class="col-12 detail"><div class="photo3"   id="one"><?php if(is_array($item_list)): $i = 0; $__LIST__ = $item_list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$data): $mod = ($i % 2 );++$i;?><div class="photoimg3"><img src="<?php echo ($data["img"]); ?>" alt=""><div class="pay"><?php echo ($data["price"]); ?></div></div><p><a href="__ROOT__/?m=item&a=index&id=<?php echo ($data["id"]); ?>"><?php echo ($data["title"]); ?></a></p><?php endforeach; endif; else: echo "" ;endif; ?></div></div></div></div><!-- /container --><div id="loading" class="loading"><img
 				src="http://files.jb51.net/file_images/article/201211/200803131036175436.gif" /></div><div id="toTop"><span>△回顶部</span></div><div class="footer"><div class="container"></div></div></body></html>

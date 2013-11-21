@@ -13,15 +13,17 @@
 <link href="__STATIC__/css/custom/css/changan.css" rel="stylesheet"
 	media="screen">
 <!-- 菜单CSS -->
-<link rel="stylesheet" type="text/css" href="__STATIC__/css/custom/css/menu-css.css">
-<link rel="stylesheet" type="text/css" href="__STATIC__/css/custom/css/style.css"> 
+<link rel="stylesheet" type="text/css"
+	href="__STATIC__/css/custom/css/menu-css.css">
+<link rel="stylesheet" type="text/css"
+	href="__STATIC__/css/custom/css/style.css">
 
 
 <script src="__STATIC__/css/custom/assets/js/jquery-1.9.0.js"></script>
 <script src="__STATIC__/css/custom/assets/js/jquery-migrate-1.0.0.js"></script>
 <script src="__STATIC__/css/custom/assets/js/bootstrap.min.js"></script>
 <script src="__STATIC__/css/custom/assets/js/holder/holder.js"></script>
-<!-- 菜单CSS -->
+<!-- 菜单JS -->
 <script src="__STATIC__/css/custom/assets/js/menu_min.js"></script>
 
 
@@ -83,26 +85,19 @@ img {
 }
 </style>
 <script type="text/javascript">
+	$(document).ready(function() {
+		$(".menu ul li").menu();
+		$("#cate").hover(function() {
+			$("#content").show();
+		}, function() {
+		});
+		$("#content").hover(function() {
 
-$(document).ready(function (){ 
-	  $(".menu ul li").menu();
-	  $("#cate").hover(
-			  function(){
-				  $("#content").show();
-			  },
-			  function(){
-			  }
-		  );
-	  $("#content").hover(
-			  function(){
-				  
-			  },
-			  function(){
-				  $(this).hide();
-			  }
-		  );
-	}); 
-	
+		}, function() {
+			$(this).hide();
+		});
+	});
+
 	window.onload = function() {
 		//初始参数 
 		var reset = 0; //某些滚动条会触发三次scroll事件 用这个解决 
@@ -159,8 +154,10 @@ $(document).ready(function (){
 		function loadImg() {
 			loading.style.display = "none";
 			var pageNum = document.getElementById("pageNum").value;
+			var cate_id = document.getElementById("cate_id").value;
 			$.ajax({
-				url : '__ROOT__/?m=index&a=index_ajax&sort=hot&p=' + pageNum,
+				url : '__ROOT__/?m=index&a=index_ajax&sort=hot&p=' + pageNum
+						+ "&cate_id=" + cate_id,
 				type : "POST",
 				dataType : "json",
 				success : function(result) {
@@ -169,12 +166,16 @@ $(document).ready(function (){
 					var datas = result.data;
 					for ( var i in datas) {
 						var item = datas[i];
-						if(i<5){
-						$("#one").append(
-								addDiv(item.img, item.price, '__ROOT__/?m=item&a=index&id='+item.id, item.title));
-						}else{
-						$("#two").append(
-								addDiv(item.img, item.price, '__ROOT__/?m=item&a=index&id='+item.id, item.title));
+						if (i < 5) {
+							$("#one").append(
+									addDiv(item.img, item.price,
+											'__ROOT__/?m=item&a=index&id='
+													+ item.id, item.title));
+						} else {
+							$("#two").append(
+									addDiv(item.img, item.price,
+											'__ROOT__/?m=item&a=index&id='
+													+ item.id, item.title));
 						}
 					}
 				}
@@ -185,7 +186,7 @@ $(document).ready(function (){
 								: document.body.scrollHeight;
 						loading.style.top = hh + "px";
 						var end = $("#end").val();
-						if(end!='1'){
+						if (end != '1') {
 							loading.style.display = "block";
 						}
 					}, 1000);
@@ -241,65 +242,36 @@ $(document).ready(function (){
 	<div class="navbar-inverse navbar-fixed-top">
 		<div class="container">
 			<div class="homebtn fl">
-				<a href="__ROOT__/?m=index&a=index&sort=hot">首页</a>
+				<a href="{:U('index/index', array('sort'=>'hot'))}">首页</a>
 			</div>
 			<div class="cate fr">
-				<a href="#"  id="cate">分类</a>
-					<!-- 菜单 -->
-						<div id="content" style="display:none;">
-						<div class="menu">
+				<a href="#" id="cate">分类</a>
+				<!-- 菜单 -->
+				<div id="content" style="display: none;">
+					<div class="menu">
 						<ul>
-								<volist name="cate_list" id="data">
-									<li><a href="#sub3">{$data.name}</a></li>
-								</volist>
-							<li><a class="active" href="#">Item 1</a>
-								<ul style="display: block;">
-									<li><a href="#sub1">Subitem 1</a></li>
-									<li><a href="#sub2">Subitem 2</a>
-										<ul>
-											<li><a href="#asdasdas">Subitem 1</a></li>
-											<li><a href="#nnnbbbbccb">Subitem 2</a></li>
-											<li><a href="#vvvccc">Subitem 3</a></li>
-											<li><a href="#bbbgvv">Subitem 4</a></li>
-										</ul>
-									</li>
-									<li><a href="#sub3">Subitem 3</a></li>
-									<li><a href="#sub4">Subitem 4</a>
-										<ul>
-											<li><a href="#asdasdas">Subitem 1</a></li>
-											<li><a href="#nnnbbbbccb">Subitem 2</a></li>
-										</ul>
-									</li>
-									<li><a href="#sub5">Subitem 5</a></li> 
-								</ul>				
-							</li>
-							<li><a href="#">Item 2</a>
+							<volist name="cate_list" id="data">
+							<li><a href="#sub3">{$data.info.name}</a>
+							<if condition="($data['children']|count) gt 0">
 								<ul>
-									<li><a href="#subb1">Subitem 1</a></li>
-									<li><a href="#subb2">Subitem 2</a></li>
-									<li><a href="#subb3">Subitem 3</a></li>
-									<li><a href="#subb4">Subitem 4</a></li>
-								</ul>				
-							</li>
-							<li><a href="#">Item 3</a>
-								<ul>
-									<li><a href="#">Subitem 1</a></li>
-									<li><a href="#">Subitem 2</a></li>
-									<li><a href="#">Subitem 3</a></li>
-									<li><a href="#">Subitem 4</a></li>
-									<li><a href="#">Subitem 5</a></li>
-									<li><a href="#">Subitem 6</a></li>
-								</ul>				
-							</li>
+									<volist name="data['children']" id="chil">
+									<li><a
+										href="{:U('index/index', array('sort'=>'hot','cate_id'=>$chil['id']))}">{$chil.name}</a></li>
+									</volist>	
+								</ul>
+								</if>
+								</li>
+							</volist>
 						</ul>
-						</div>
-						</div>
+					</div>
+				</div>
 				<!-- 菜单END -->
 			</div>
 		</div>
 	</div>
 	<input type="hidden" id="pageNum" value="{$p}">
 	<input type="hidden" id="end" value="0">
+	<input type="hidden" id="cate_id" value="{$cate_id}">
 	<!-- Carousel-->
 
 
@@ -310,11 +282,11 @@ $(document).ready(function (){
 			<img src="__STATIC__/css/custom/images/pic.png">
 		</div>
 		<div class="more">
-			<a href="__ROOT__/?m=book&a=index&sort=hot">热门宝贝</a>
+			<a href="{:U('book/index', array('sort'=>'hot'))}">热门宝贝</a>
 		</div>
 		<div class="row show-grid">
 			<div class="col-12">
-			
+
 				<div class="col-6 photo" id="one">
 					<volist name="item_list" id="data">
 					<div class="photoimg">
